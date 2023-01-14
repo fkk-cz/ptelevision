@@ -1,19 +1,27 @@
+ESX = nil
 local Locations = {}
+
+TriggerEvent(
+    "esx:getSharedObject",
+    function(obj)
+        ESX = obj
+    end
+)
 
 function SetTelevision(coords, key, value, update)
     local index, data = GetTelevision(coords)
-    if (index ~= nil) then 
-        if (Televisions[index] == nil) then 
+    if (index ~= nil) then
+        if (Televisions[index] == nil) then
             Televisions[index] = {}
         end
         Televisions[index][key] = value
     else
         index = os.time()
-        while Televisions[index] do 
+        while Televisions[index] do
             index = index + 1
             Citizen.Wait(0)
         end
-        if (Televisions[index] == nil) then 
+        if (Televisions[index] == nil) then
             Televisions[index] = {}
         end
         Televisions[index][key] = value
@@ -27,14 +35,14 @@ function SetTelevision(coords, key, value, update)
 end
 
 function SetChannel(source, data)
-    if data then 
-        for k,v in pairs(Channels) do 
-            if (Channels[k].source == source) then 
+    if data then
+        for k, v in pairs(Channels) do
+            if (Channels[k].source == source) then
                 return
             end
         end
         local index = 1
-        while Channels[index] do 
+        while Channels[index] do
             index = index + 1
             Citizen.Wait(0)
         end
@@ -43,8 +51,8 @@ function SetChannel(source, data)
         TriggerClientEvent("ptelevision:broadcast", -1, Channels, index)
         return
     else
-        for k,v in pairs(Channels) do 
-            if (Channels[k].source == source) then 
+        for k, v in pairs(Channels) do
+            if (Channels[k].source == source) then
                 Channels[k] = nil
                 TriggerClientEvent("ptelevision:broadcast", -1, Channels, k)
                 return
@@ -53,36 +61,73 @@ function SetChannel(source, data)
     end
 end
 
-RegisterNetEvent("ptelevision:requestSync", function(coords) 
-    local _source = source
-    local index, data = GetTelevision(coords)
-    TriggerClientEvent("ptelevision:requestSync", _source, coords, {current_time = os.time()})
-end)
+RegisterNetEvent(
+    "ptelevision:requestSync",
+    function(coords)
+        local _source = source
+        local index, data = GetTelevision(coords)
+        TriggerClientEvent("ptelevision:requestSync", _source, coords, {current_time = os.time()})
+    end
+)
 
-RegisterNetEvent("ptelevision:event", function(data, key, value) 
-    local _source = source
-    Config.Events.ScreenInteract(_source, data, key, value, function()
-        SetTelevision(data.coords, key, value, true)
-    end)
-end)
+RegisterNetEvent(
+    "ptelevision:event",
+    function(data, key, value)
+        local _source = source
 
-RegisterNetEvent("ptelevision:broadcast", function(data)
-    local _source = source
-    Config.Events.Broadcast(_source, data, function()
-        SetChannel(_source, data)
-    end)
-end)
+        if data and data.model == GetHashKey("v_ilev_cin_screen") then
+            local xPlayer = ESX.GetPlayerFromId(_source)
+            if xPlayer.job.name == "cinema" and xPlayer.job.grade >= 2 then
+                SetTelevision(data.coords, key, value, true)
+                return
+            end
+        end
 
-RegisterNetEvent("ptelevision:requestUpdate", function()
-    local _source = source
-    TriggerClientEvent("ptelevision:requestUpdate", _source, {
-        Televisions = Televisions,
-        Channels = Channels
-    })
-end)
+        Config.Events.ScreenInteract(
+            _source,
+            data,
+            key,
+            value,
+            function()
+                SetTelevision(data.coords, key, value, true)
+            end
+        )
+    end
+)
 
-AddEventHandler('playerDropped', function(reason)
-    local _source = source
-    SetChannel(_source, nil)
-end)
+RegisterNetEvent(
+    "ptelevision:broadcast",
+    function(data)
+        local _source = source
+        Config.Events.Broadcast(
+            _source,
+            data,
+            function()
+                SetChannel(_source, data)
+            end
+        )
+    end
+)
 
+RegisterNetEvent(
+    "ptelevision:requestUpdate",
+    function()
+        local _source = source
+        TriggerClientEvent(
+            "ptelevision:requestUpdate",
+            _source,
+            {
+                Televisions = Televisions,
+                Channels = Channels
+            }
+        )
+    end
+)
+
+AddEventHandler(
+    "playerDropped",
+    function(reason)
+        local _source = source
+        SetChannel(_source, nil)
+    end
+)
