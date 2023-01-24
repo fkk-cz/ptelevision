@@ -124,6 +124,22 @@ RegisterNetEvent(
     end
 )
 
+RegisterNetEvent(
+    "ptelevision:browserMouseEvent",
+    function(data, control, duiX, duiY)
+        local _source = source
+        TriggerClientEvent("ptelevision:browserMouseEvent", -1, _source, data, control, duiX, duiY)
+    end
+)
+
+RegisterNetEvent(
+    "ptelevision:canInteract",
+    function(data)
+        local _source = source
+        TriggerClientEvent("ptelevision:canInteract", _source, Player(_source).state.insideHouse or IsPlayerAceAllowed(_source, "controltv"))
+    end
+)
+
 AddEventHandler(
     "playerDropped",
     function(reason)

@@ -251,6 +251,41 @@ RegisterNetEvent(
     end
 )
 
+RegisterNetEvent(
+    "ptelevision:browserMouseEvent",
+    function(plySource, data, control, lastDuiX, lastDuiY)
+        if
+            CURRENT_SCREEN and CURRENT_SCREEN.model == data.model and data.coords == CURRENT_SCREEN.coords and duiObj and
+                plySource ~= GetPlayerServerId(PlayerId())
+         then
+            if control == 172 then
+                SendDuiMouseWheel(duiObj, 10, 0)
+            end
+            if control == 173 then
+                SendDuiMouseWheel(duiObj, -10, 0)
+            end
+
+            if control == 24 then
+                SendDuiMouseMove(duiObj, lastDuiX, lastDuiY)
+
+                SendDuiMouseDown(duiObj, "left")
+                Wait(0)
+                SendDuiMouseUp(duiObj, "left")
+                SendDuiMouseUp(duiObj, "right")
+            end
+        end
+    end
+)
+
+RegisterNetEvent(
+    "ptelevision:canInteract",
+    function(allowed)
+        if CURRENT_SCREEN then
+            CURRENT_SCREEN.canInteract = allowed
+        end
+    end
+)
+
 RegisterNUICallback(
     "pageLoaded",
     function()
