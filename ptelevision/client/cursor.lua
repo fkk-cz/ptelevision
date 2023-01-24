@@ -74,7 +74,6 @@ function SetInteractScreen(bool)
 
                         lastDuiX = math.floor(duiX)
                         lastDuiY = math.floor(duiY)
-                        print(duiX, duiY)
                     end
                     DrawSprite("fib_pc", "arrow", mX / screenWidth, mY / screenHeight, 0.005, 0.01, 0.0, 255, 255, 255, 255)
 
@@ -94,11 +93,9 @@ function SetInteractScreen(bool)
                     end -- scroll down
 
                     if IsDisabledControlJustPressed(0, 24) then
-                        print("LEFT DOWN", lastDuiX, lastDuiY, GetGameTimer())
                         TriggerServerEvent("ptelevision:browserMouseEvent", CURRENT_SCREEN, 24, lastDuiX, lastDuiY)
                         SendDuiMouseDown(duiObj, "left")
                     elseif IsDisabledControlJustReleased(0, 24) then
-                        print("LEFT UP", lastDuiX, lastDuiY, GetGameTimer())
                         SendDuiMouseUp(duiObj, "left")
                         SendDuiMouseUp(duiObj, "right")
                     end
