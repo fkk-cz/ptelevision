@@ -72,6 +72,7 @@ Config.Models = { -- Any TV Models used on the map or in locations must be defin
     },
     [`v_ilev_cin_screen`] = {
         DefaultVolume = 1.0,
+        Interior = true,
         Target = "cinscreen",
         SoundOffset = vector3(0, -30.0, 0),
         SoundRange = 25.0,
@@ -109,6 +110,8 @@ Config.Models = { -- Any TV Models used on the map or in locations must be defin
     },
     [`prop_tv_flat_michael`] = {
         DefaultVolume = 0.5,
+        Interior = true,
+        SameRoom = true,
         Range = 20.0,
         Target = "tvscreen", -- Only use if prop has render-target name.
         Scale = 0.085,

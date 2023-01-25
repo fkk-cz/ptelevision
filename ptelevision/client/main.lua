@@ -162,6 +162,7 @@ end
 function GetClosestScreen()
     local objPool = GetGamePool("CObject")
     local closest = {dist = -1}
+    local plyPed = PlayerPedId()
     local pcoords = GetEntityCoords(PlayerPedId())
     for i = 1, #objPool do
         local entity = objPool[i]
@@ -171,7 +172,17 @@ function GetClosestScreen()
             local coords = GetEntityCoords(entity)
             local dist = #(pcoords - coords)
             if (dist < closest.dist or closest.dist < 0) and dist < data.Range then
-                closest = {dist = dist, coords = coords, model = model, entity = entity}
+                if data.Interior and GetInteriorFromEntity(entity) == GetInteriorFromEntity(plyPed) then
+                    if data.SameRoom then
+                        if GetRoomKeyFromEntity(entity) == GetRoomKeyFromEntity(plyPed) then
+                            closest = {dist = dist, coords = coords, model = model, entity = entity}
+                        end
+                    else
+                        closest = {dist = dist, coords = coords, model = model, entity = entity}
+                    end
+                elseif not data.Interior then
+                    closest = {dist = dist, coords = coords, model = model, entity = entity}
+                end
             end
         end
     end
