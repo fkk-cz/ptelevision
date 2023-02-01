@@ -136,7 +136,11 @@ RegisterNetEvent(
     "ptelevision:canInteract",
     function(data)
         local _source = source
-        TriggerClientEvent("ptelevision:canInteract", _source, Player(_source).state.insideHouse or IsPlayerAceAllowed(_source, "controltv"))
+        TriggerClientEvent(
+            "ptelevision:canInteract",
+            _source,
+            Player(_source).state.insideHouse or IsPlayerAceAllowed(_source, "controltv") or data.model == GetHashKey("v_ilev_cin_screen")
+        )
     end
 )
 

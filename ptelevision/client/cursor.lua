@@ -84,16 +84,22 @@ function SetInteractScreen(bool)
                         OpenTVMenu()
                     end -- scroll up
                     if IsDisabledControlPressed(0, 172) then
-                        TriggerServerEvent("ptelevision:browserMouseEvent", CURRENT_SCREEN, 172, lastDuiX, lastDuiY)
+                        if CURRENT_SCREEN and CURRENT_SCREEN.model ~= GetHashKey("v_ilev_cin_screen") then
+                            TriggerServerEvent("ptelevision:browserMouseEvent", CURRENT_SCREEN, 172, lastDuiX, lastDuiY)
+                        end
                         SendDuiMouseWheel(duiObj, 10, 0)
                     end -- scroll up
                     if IsDisabledControlPressed(0, 173) then
-                        TriggerServerEvent("ptelevision:browserMouseEvent", CURRENT_SCREEN, 173, lastDuiX, lastDuiY)
+                        if CURRENT_SCREEN and CURRENT_SCREEN.model ~= GetHashKey("v_ilev_cin_screen") then
+                            TriggerServerEvent("ptelevision:browserMouseEvent", CURRENT_SCREEN, 173, lastDuiX, lastDuiY)
+                        end
                         SendDuiMouseWheel(duiObj, -10, 0)
                     end -- scroll down
 
                     if IsDisabledControlJustPressed(0, 24) then
-                        TriggerServerEvent("ptelevision:browserMouseEvent", CURRENT_SCREEN, 24, lastDuiX, lastDuiY)
+                        if CURRENT_SCREEN and CURRENT_SCREEN.model ~= GetHashKey("v_ilev_cin_screen") then
+                            TriggerServerEvent("ptelevision:browserMouseEvent", CURRENT_SCREEN, 24, lastDuiX, lastDuiY)
+                        end
                         SendDuiMouseDown(duiObj, "left")
                     elseif IsDisabledControlJustReleased(0, 24) then
                         SendDuiMouseUp(duiObj, "left")
