@@ -137,6 +137,13 @@ Config.Models = { -- Any TV Models used on the map or in locations must be defin
         Target = "tvscreen", -- Only use if prop has render-target name.
         Scale = 0.085,
         Offset = vector3(-1.02, -0.055, 1.04)
+    },
+    [`v_ilev_mm_screen2`] = {
+        DefaultVolume = 0.8,
+        Range = 30.0,
+        Target = "tvscreen", -- Only use if prop has render-target name.
+        Scale = 0.085,
+        Offset = vector3(-1.02, -0.055, 1.04)
     }
 }
 
