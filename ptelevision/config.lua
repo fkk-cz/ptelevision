@@ -164,11 +164,19 @@ Config.Channels = { -- These channels are default channels and cannot be overrid
 
 Config.Events = { -- Events for approving broadcasts / interactions (due to popular demand).
     ScreenInteract = function(source, data, key, value, cb) -- cb() to approve.
+        if Player(source).state.inJail or Player(source).state.comserv then
+            return
+        end
+
         if Player(source).state.insideHouse or IsPlayerAceAllowed(source, "controltv") then
             cb()
         end
     end,
     Broadcast = function(source, data, cb)  -- cb() to approve.
+        if Player(source).state.inJail or Player(source).state.comserv then
+            return
+        end
+
         if IsPlayerAceAllowed(source, "controltv") then
             cb()
         end
