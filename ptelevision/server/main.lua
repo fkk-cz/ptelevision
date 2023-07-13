@@ -1,12 +1,4 @@
-ESX = nil
 local Locations = {}
-
-TriggerEvent(
-    "esx:getSharedObject",
-    function(obj)
-        ESX = obj
-    end
-)
 
 function SetTelevision(coords, key, value, update)
     local index, data = GetTelevision(coords)
